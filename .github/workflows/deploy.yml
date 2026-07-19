@@ -1,0 +1,67 @@
+name: deploy
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write # OIDC token for aws-actions/configure-aws-credentials
+  contents: read
+
+env:
+  AWS_REGION: eu-central-1
+
+jobs:
+  # PRs and main: typecheck + render. verify.ts fails the job if any
+  # {{placeholder}} got escaped or mangled in the rendered HTML.
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+
+  sync-dev:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_GHA_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+      - run: npm run sync:dev
+
+  # Prod sync is gated by the "production" GitHub environment — configure a
+  # required reviewer on it (Settings → Environments → production) so this
+  # job waits for manual approval after dev succeeds.
+  sync-prod:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: sync-dev
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_GHA_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+      - run: npm run sync:prod

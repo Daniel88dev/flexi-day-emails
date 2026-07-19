@@ -1,0 +1,33 @@
+{
+  "name": "flexi-day-emails",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Transactional email templates for flexiday, rendered with react-email and synced to AWS SES",
+  "type": "module",
+  "scripts": {
+    "dev": "email dev --dir emails",
+    "typecheck": "tsc --noEmit",
+    "build": "tsx src/render.ts && tsx src/verify.ts",
+    "sync": "npm run build && tsx src/sync-templates.ts",
+    "sync:dev": "STAGE=dev npm run sync",
+    "sync:prod": "STAGE=prod npm run sync"
+  },
+  "dependencies": {
+    "@aws-sdk/client-sesv2": "^3.828.0",
+    "@react-email/components": "^0.5.0",
+    "@react-email/render": "^1.1.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-email": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

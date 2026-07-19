@@ -1,0 +1,12 @@
+aws_region     = "eu-central-1"
+environment    = "production"
+sending_domain = "flexi-day.com"
+
+# Set to false if the DKIM CNAMEs will be added to DNS manually
+manage_route53_dkim_records = true
+
+# Set to false if another repo in this AWS account already created the
+# GitHub OIDC provider (it is account-global)
+create_github_oidc_provider = true
+
+github_repository = "daniel88dev/flexi-day-emails"
