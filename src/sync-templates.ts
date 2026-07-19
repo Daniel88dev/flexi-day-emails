@@ -24,7 +24,7 @@ import {
   SESv2Client,
   UpdateEmailTemplateCommand,
 } from "@aws-sdk/client-sesv2";
-import type { ManifestEntry } from "./render.js";
+import type { ManifestEntry } from "./render";
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const outDir = path.join(root, "out");

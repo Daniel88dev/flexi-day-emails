@@ -1,6 +1,6 @@
 import { Button as EmailButton } from "@react-email/components";
 import type { ReactNode } from "react";
-import { colors, fonts, radius } from "../theme.js";
+import { colors, fonts, radius } from "../theme";
 
 interface ButtonProps {
   href: string;

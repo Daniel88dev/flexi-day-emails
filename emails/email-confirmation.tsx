@@ -1,7 +1,7 @@
 import { Heading, Hr, Link, Section, Text } from "@react-email/components";
-import { Button } from "../src/components/Button.js";
-import { EmailLayout } from "../src/components/EmailLayout.js";
-import { colors, fonts } from "../src/theme.js";
+import { Button } from "../src/components/Button";
+import { EmailLayout } from "../src/components/EmailLayout";
+import { colors, fonts } from "../src/theme";
 
 /**
  * Email-address confirmation, sent by better-auth's sendVerificationEmail

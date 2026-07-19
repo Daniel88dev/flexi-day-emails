@@ -1,5 +1,5 @@
 import { Column, Row } from "@react-email/components";
-import { colors, fonts } from "../theme.js";
+import { colors, fonts } from "../theme";
 
 /**
  * Text recreation of the frontend Logo component (components/brand/logo.tsx):

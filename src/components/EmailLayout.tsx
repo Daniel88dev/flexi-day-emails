@@ -8,8 +8,8 @@ import {
   Text,
 } from "@react-email/components";
 import type { ReactNode } from "react";
-import { brand, colors, fonts, radius } from "../theme.js";
-import { Logo } from "./Logo.js";
+import { brand, colors, fonts, radius } from "../theme";
+import { Logo } from "./Logo";
 
 interface EmailLayoutProps {
   preview: string;
