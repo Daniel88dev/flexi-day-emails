@@ -68,26 +68,25 @@ uses the GitHub OIDC role — no long-lived keys anywhere.
 
 ## Terraform bootstrap (one-time, run locally)
 
-Terraform manages the SES **infrastructure** only (identity, DKIM,
-configuration set, CI role). Templates themselves are owned by the sync
-script. State is local, matching `flexi-day-be`'s convention.
+Terraform manages **only** the GitHub Actions IAM role for template sync. The
+SES domain identity, Easy DKIM records, and the configuration set already
+exist in the account and are referenced, not recreated — see
+[terraform/README.md](terraform/README.md). Templates themselves are owned by
+the sync script. State is local, matching `flexi-day-be`'s convention.
 
 ```sh
 cd terraform
 cp terraform.tfvars.example terraform.tfvars   # adjust if needed
 terraform init
-terraform plan
-terraform apply
+terraform plan -out=tfplan
+terraform apply tfplan
 ```
 
 Notes:
 
-- **DKIM**: with `manage_route53_dkim_records = true` (default) the three
-  CNAMEs are created in the existing `flexi-day.com` hosted zone. Domain
-  verification flips to verified once they propagate (minutes to ~1 h).
-- **OIDC provider**: `token.actions.githubusercontent.com` is account-global.
-  If another repo already created it, set
-  `create_github_oidc_provider = false` (it will be looked up instead).
+- **OIDC provider**: `token.actions.githubusercontent.com` is account-global
+  and already exists (flexi-day-be uses it), so `create_github_oidc_provider`
+  defaults to `false` and the provider is looked up via data source.
 - After apply, copy the `github_actions_role_arn` output into the GitHub
   repo as an **Actions variable** named `AWS_GHA_ROLE_ARN`
   (Settings → Secrets and variables → Actions → Variables).

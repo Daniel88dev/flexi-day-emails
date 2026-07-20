@@ -17,19 +17,6 @@ variable "project_name" {
   default     = "flexi-day-emails"
 }
 
-# SES Configuration
-variable "sending_domain" {
-  description = "Domain to verify as an SES sending identity. Must match the Route 53 hosted zone."
-  type        = string
-  default     = "flexi-day.com"
-}
-
-variable "manage_route53_dkim_records" {
-  description = "Create the three DKIM CNAME records in the existing Route 53 hosted zone. Set to false to publish them manually from the dkim_tokens output."
-  type        = bool
-  default     = true
-}
-
 # GitHub Actions OIDC
 variable "github_repository" {
   description = "GitHub repository (owner/name) allowed to assume the template-sync role"
@@ -38,7 +25,7 @@ variable "github_repository" {
 }
 
 variable "create_github_oidc_provider" {
-  description = "Create the token.actions.githubusercontent.com OIDC provider. The provider is account-global — set to false and it is looked up instead, if another repo already created it."
+  description = "Create the token.actions.githubusercontent.com OIDC provider. It is account-global and already exists in this account (flexi-day-be uses it), so this defaults to false and the provider is looked up instead."
   type        = bool
-  default     = true
+  default     = false
 }

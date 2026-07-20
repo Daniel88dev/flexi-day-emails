@@ -1,12 +1,9 @@
-aws_region     = "eu-central-1"
-environment    = "production"
-sending_domain = "flexi-day.com"
-
-# Set to false if the DKIM CNAMEs will be added to DNS manually
-manage_route53_dkim_records = true
-
-# Set to false if another repo in this AWS account already created the
-# GitHub OIDC provider (it is account-global)
-create_github_oidc_provider = true
+aws_region  = "eu-central-1"
+environment = "production"
 
 github_repository = "daniel88dev/flexi-day-emails"
+
+# The GitHub OIDC provider is account-global and already exists (flexi-day-be
+# uses it), so this stays false and the provider is looked up. Set to true
+# only in an account that has never set up GitHub Actions OIDC.
+create_github_oidc_provider = false
