@@ -19,9 +19,9 @@ variable "project_name" {
 
 # GitHub Actions OIDC
 variable "github_repository" {
-  description = "GitHub repository (owner/name) allowed to assume the template-sync role"
+  description = "GitHub repository (owner/name) allowed to assume the template-sync role. MUST match the owner's canonical case exactly — GitHub's OIDC 'sub' claim preserves it (repo:Daniel88dev/...) and the IAM trust policy uses case-sensitive StringLike."
   type        = string
-  default     = "daniel88dev/flexi-day-emails"
+  default     = "Daniel88dev/flexi-day-emails"
 }
 
 variable "create_github_oidc_provider" {
