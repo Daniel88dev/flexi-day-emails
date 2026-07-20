@@ -1,8 +1,10 @@
 aws_region  = "eu-central-1"
 environment = "production"
 
-# Owner case must match GitHub exactly — the OIDC sub claim is case-sensitive
-github_repository = "Daniel88dev/flexi-day-emails"
+# Exact OIDC 'sub' claim prefix GitHub sends (case-sensitive, immutable format
+# for new repos). Get it with:
+#   gh api /repos/Daniel88dev/flexi-day-emails/actions/oidc/customization/sub --jq .sub_claim_prefix
+github_oidc_sub_prefix = "repo:Daniel88dev@64728456/flexi-day-emails@1306024515"
 
 # The GitHub OIDC provider is account-global and already exists (flexi-day-be
 # uses it), so this stays false and the provider is looked up. Set to true
