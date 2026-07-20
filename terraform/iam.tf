@@ -2,6 +2,12 @@
 #
 # The role can only be assumed by workflows in var.github_repository and can
 # only manage SES email templates (least privilege).
+#
+# This is the ONLY resource this repo's Terraform creates. The SES domain
+# identity (flexi-day.com), its Easy DKIM records, and the configuration set
+# (flexi-day-emails-production) already exist in the account — created in the
+# console / verified — and are intentionally not managed here. Import them
+# (see terraform/README.md) only if you want full IaC ownership later.
 
 data "aws_caller_identity" "current" {}
 
