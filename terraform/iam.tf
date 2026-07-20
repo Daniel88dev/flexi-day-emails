@@ -1,7 +1,7 @@
 # GitHub Actions OIDC federation for template sync — no long-lived AWS keys.
 #
-# The role can only be assumed by workflows in var.github_repository and can
-# only manage SES email templates (least privilege).
+# The role can only be assumed by this repo's workflows (var.github_oidc_sub_prefix)
+# and can only manage SES email templates (least privilege).
 #
 # This is the ONLY resource this repo's Terraform creates. The SES domain
 # identity (flexi-day.com), its Easy DKIM records, and the configuration set
@@ -47,10 +47,15 @@ data "aws_iam_policy_document" "github_assume_role" {
       values   = ["sts.amazonaws.com"]
     }
 
+    # GitHub sends the immutable subject format for this repo:
+    #   repo:Daniel88dev@<ownerId>/flexi-day-emails@<repoId>:<context>
+    # (newer repos default to it; the numeric IDs are stable across renames).
+    # The prefix comes from var.github_oidc_sub_prefix; the trailing :* covers
+    # every ref/environment context.
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:${var.github_repository}:*"]
+      values   = ["${var.github_oidc_sub_prefix}:*"]
     }
   }
 }

@@ -18,10 +18,20 @@ variable "project_name" {
 }
 
 # GitHub Actions OIDC
-variable "github_repository" {
-  description = "GitHub repository (owner/name) allowed to assume the template-sync role. MUST match the owner's canonical case exactly — GitHub's OIDC 'sub' claim preserves it (repo:Daniel88dev/...) and the IAM trust policy uses case-sensitive StringLike."
+#
+# This is the exact prefix of the OIDC 'sub' claim GitHub puts in the token,
+# minus the trailing ":<context>". Newer repos (this one) use the IMMUTABLE
+# format that embeds numeric owner/repo IDs and is stable across renames:
+#   repo:Daniel88dev@<ownerId>/flexi-day-emails@<repoId>
+# Older repos use the legacy "repo:<owner>/<repo>" format. IAM trust matching
+# is case-sensitive, so the case must match GitHub's canonical owner login too.
+#
+# Get the exact value for any repo with:
+#   gh api /repos/<owner>/<repo>/actions/oidc/customization/sub --jq .sub_claim_prefix
+variable "github_oidc_sub_prefix" {
+  description = "OIDC 'sub' claim prefix GitHub sends for this repo's workflows (from actions/oidc/customization/sub). The trust policy matches this + ':*'."
   type        = string
-  default     = "Daniel88dev/flexi-day-emails"
+  default     = "repo:Daniel88dev@64728456/flexi-day-emails@1306024515"
 }
 
 variable "create_github_oidc_provider" {
