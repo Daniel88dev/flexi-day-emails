@@ -1,7 +1,7 @@
 import { Heading, Hr, Link, Section, Text } from "@react-email/components";
 import { Button } from "../src/components/Button";
 import { EmailLayout } from "../src/components/EmailLayout";
-import { colors, fonts } from "../src/theme";
+import { buttonSection, divider, heading, link, muted, paragraph } from "../src/styles";
 
 /**
  * Email-address confirmation, sent by better-auth's sendVerificationEmail
@@ -56,41 +56,3 @@ export default function EmailConfirmation({
     </EmailLayout>
   );
 }
-
-const heading = {
-  fontFamily: fonts.display,
-  fontSize: "24px",
-  fontWeight: 600,
-  letterSpacing: "-0.02em",
-  lineHeight: "1.15",
-  color: colors.text,
-  margin: "0 0 20px",
-};
-
-const paragraph = {
-  fontSize: "15px",
-  lineHeight: "24px",
-  color: colors.text,
-  margin: "0 0 14px",
-};
-
-const buttonSection = {
-  padding: "10px 0 22px",
-};
-
-const muted = {
-  fontSize: "13px",
-  lineHeight: "20px",
-  color: colors.textMuted,
-  margin: "0 0 10px",
-};
-
-const link = {
-  color: colors.primary,
-  wordBreak: "break-all" as const,
-};
-
-const divider = {
-  borderColor: colors.border,
-  margin: "18px 0",
-};

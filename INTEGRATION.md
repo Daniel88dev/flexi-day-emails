@@ -29,23 +29,46 @@ here.
 
 Template names (region `eu-central-1`):
 
-| Stage | TemplateName |
-| ----- | ------------ |
-| dev   | `flexi-day-email-confirmation-dev` |
+| Stage | TemplateName                        |
+| ----- | ----------------------------------- |
+| dev   | `flexi-day-email-confirmation-dev`  |
 | prod  | `flexi-day-email-confirmation-prod` |
 
 `TemplateData` variables (all required; SES renders missing variables as
 empty strings, so validate before sending):
 
-| Variable | Type | Example | Source in better-auth hook |
-| -------- | ---- | ------- | -------------------------- |
-| `name` | string | `"Daniel"` | `user.name` |
-| `confirmationUrl` | string (absolute URL) | `"https://api.flexi-day.com/api/auth/verify-email?token=..."` | `url` |
-| `expiresIn` | string (human-readable) | `"1 hour"` | constant — better-auth's default verification-token expiry is 3600 s; if `emailVerification.expiresIn` is ever configured, keep this string in sync |
+| Variable          | Type                    | Example                                                       | Source in better-auth hook                                                                                                                          |
+| ----------------- | ----------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`            | string                  | `"Daniel"`                                                    | `user.name`                                                                                                                                         |
+| `confirmationUrl` | string (absolute URL)   | `"https://api.flexi-day.com/api/auth/verify-email?token=..."` | `url`                                                                                                                                               |
+| `expiresIn`       | string (human-readable) | `"1 hour"`                                                    | constant — better-auth's default verification-token expiry is 3600 s; if `emailVerification.expiresIn` is ever configured, keep this string in sync |
 
 Configuration set (optional but available): `flexi-day-emails-dev` /
 `flexi-day-emails-production`. Sender address must be on the verified
 `flexi-day.com` domain, e.g. `no-reply@flexi-day.com`.
+
+## Vacation workflow templates
+
+Four more templates cover the request lifecycle. They follow the same naming
+convention (`flexi-day-<name>-<stage>`) and the same rule: **every variable
+must be present and non-empty** — pass a placeholder such as `"—"` rather than
+an empty string for optional fields (note, reason).
+
+| Template                    | Recipient                                           | Variables                                                                                                                    |
+| --------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `vacation-approval-request` | group approver                                      | `approverName`, `employeeName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `note`, `requestUrl`                       |
+| `vacation-approved`         | requesting employee                                 | `employeeName`, `approverName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `requestUrl`                               |
+| `vacation-rejected`         | requesting employee                                 | `employeeName`, `approverName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `reason`, `requestUrl`                     |
+| `vacation-cancelled`        | employee, or the approver when the employee cancels | `recipientName`, `employeeName`, `cancelledByName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `reason`, `requestUrl` |
+
+`requestUrl` is an absolute frontend URL pointing at the request
+(`https://www.flexi-day.com/requests/?vacationId=…`). `dateRange` and
+`dayCount` are pre-formatted by the backend (e.g. `"12 – 16 Aug 2026"`,
+`"5 days"`) so the templates stay free of formatting logic.
+
+All four are workflow notifications and must respect the recipient's
+`emailNotifications` preference (`user_settings` in flexi-day-be); the
+confirmation email is transactional and always sends.
 
 ## Implementation instructions
 

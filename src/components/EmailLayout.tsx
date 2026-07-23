@@ -14,13 +14,30 @@ import { Logo } from "./Logo";
 interface EmailLayoutProps {
   preview: string;
   children: ReactNode;
+  /**
+   * Why the recipient is getting this mail. Defaults to the sign-up wording;
+   * workflow notifications (approvals, decisions, cancellations) pass their
+   * own line, since those are sent to existing team members.
+   */
+  footerNote?: ReactNode;
 }
+
+const DEFAULT_FOOTER_NOTE = (
+  <>
+    You received this email because an account was created with your address. If
+    that wasn&apos;t you, you can safely ignore it.
+  </>
+);
 
 /**
  * Shared chrome for all flexiday emails: warm-paper background, a card
  * with the logo header, and a footer with sender info.
  */
-export function EmailLayout({ preview, children }: EmailLayoutProps) {
+export function EmailLayout({
+  preview,
+  children,
+  footerNote = DEFAULT_FOOTER_NOTE,
+}: EmailLayoutProps) {
   return (
     <Html lang="en">
       <Head />
@@ -33,10 +50,7 @@ export function EmailLayout({ preview, children }: EmailLayoutProps) {
           <Section style={card}>{children}</Section>
           <Section style={footer}>
             <Text style={footerText}>{brand.senderInfo}</Text>
-            <Text style={footerText}>
-              You received this email because an account was created with your
-              address. If that wasn&apos;t you, you can safely ignore it.
-            </Text>
+            <Text style={footerText}>{footerNote}</Text>
           </Section>
         </Container>
       </Body>
