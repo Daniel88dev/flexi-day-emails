@@ -13,13 +13,26 @@ sending fees.
 ```
 emails/                  react-email templates (one file per template)
 src/theme.ts             design tokens extracted from the flexi-day frontend
-src/components/          shared layout: Logo, EmailLayout, Button
+src/styles.ts            shared body text styles (heading, paragraph, muted…)
+src/components/          shared layout: Logo, EmailLayout, Button, LeaveSummary
 src/render.ts            renders all templates to out/ (HTML + text + manifest)
 src/verify.ts            asserts {{placeholders}} survived rendering
 src/sync-templates.ts    idempotent upsert to SES via @aws-sdk/client-sesv2
 terraform/               SES identity + DKIM + config set + GitHub OIDC role
 .github/workflows/       CI: verify on PR, sync on main (dev → approved prod)
 ```
+
+## Templates
+
+| Template                    | Sent when                                                   |
+| --------------------------- | ----------------------------------------------------------- |
+| `email-confirmation`        | a new account must confirm its address (better-auth)        |
+| `vacation-approval-request` | an employee submits a request their approver must decide on |
+| `vacation-approved`         | an approver accepts a request                               |
+| `vacation-rejected`         | an approver declines a request                              |
+| `vacation-cancelled`        | already-approved time off is cancelled                      |
+
+Variable contracts live in [INTEGRATION.md](INTEGRATION.md).
 
 ## Local preview
 
