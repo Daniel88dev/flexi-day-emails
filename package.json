@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "email dev --dir emails",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "node node_modules/@typescript/native/bin/tsc --noEmit",
     "build": "tsx src/render.ts && tsx src/verify.ts",
     "sync": "npm run build && tsx src/sync-templates.ts",
     "sync:dev": "STAGE=dev npm run sync",
@@ -26,7 +26,8 @@
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.8.0"
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   },
   "engines": {
     "node": ">=20"
