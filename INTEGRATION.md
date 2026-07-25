@@ -60,6 +60,7 @@ an empty string for optional fields (note, reason).
 | `vacation-approved`         | requesting employee                                 | `employeeName`, `approverName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `requestUrl`                               |
 | `vacation-rejected`         | requesting employee                                 | `employeeName`, `approverName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `reason`, `requestUrl`                     |
 | `vacation-cancelled`        | employee, or the approver when the employee cancels | `recipientName`, `employeeName`, `cancelledByName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `reason`, `requestUrl` |
+| `vacation-comment`          | the other party (requester ⇄ approver)              | `recipientName`, `employeeName`, `commenterName`, `teamName`, `leaveType`, `dateRange`, `message`, `requestUrl`              |
 
 `requestUrl` is an absolute frontend URL pointing at the request
 (`https://www.flexi-day.com/requests/?vacationId=…`). `dateRange` and
