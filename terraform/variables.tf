@@ -39,3 +39,40 @@ variable "create_github_oidc_provider" {
   type        = bool
   default     = false
 }
+
+# Inbound email forwarding
+variable "hosted_zone_name" {
+  description = "Route 53 public hosted zone for the domain that receives mail. Its zone is looked up, not created (managed alongside flexi-day-be)."
+  type        = string
+  default     = "flexi-day.com"
+}
+
+variable "forward_to_email" {
+  description = "Personal inbox that inbound mail is forwarded to. Must be reachable; if the SES account is still in sandbox mode it must also be a verified identity."
+  type        = string
+  default     = "daniel@hrynusiw.cz"
+}
+
+variable "from_email" {
+  description = "Verified domain address used as the rewritten From on forwarded mail (SES cannot send from an unverified address). Original sender goes to Reply-To."
+  type        = string
+  default     = "support@flexi-day.com"
+}
+
+variable "subject_prefix" {
+  description = "Optional prefix prepended to the Subject of forwarded mail."
+  type        = string
+  default     = ""
+}
+
+variable "mail_retention_days" {
+  description = "Days to keep raw received messages in S3 before lifecycle expiry."
+  type        = number
+  default     = 30
+}
+
+variable "manage_spf_record" {
+  description = "Publish an SPF TXT record (v=spf1 include:amazonses.com ~all) at the apex. Disable if an apex TXT/SPF is managed elsewhere."
+  type        = bool
+  default     = true
+}
