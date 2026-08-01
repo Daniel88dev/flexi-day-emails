@@ -71,6 +71,30 @@ All four are workflow notifications and must respect the recipient's
 `emailNotifications` preference (`user_settings` in flexi-day-be); the
 confirmation email is transactional and always sends.
 
+## Group invite template
+
+`group-invite` is sent when a group admin invites someone by email
+(`POST /api/group-user/{groupId}/invites` in flexi-day-be). It follows the same
+naming convention and the same all-variables-non-empty rule.
+
+| Template       | Recipient          | Variables                                                                                     |
+| -------------- | ------------------ | --------------------------------------------------------------------------------------------- |
+| `group-invite` | the invited person | `groupName`, `inviterName`, `inviteCode`, `signUpUrl`, `joinUrl`, `invitedEmail`, `expiresIn` |
+
+The code lives in the email **body only** — `signUpUrl` is the plain sign-up
+page and carries no token, so forwarding the link alone grants nothing. The
+code is single-use, bound to `invitedEmail`, and expires after `expiresIn`.
+
+This one goes to an address that may not have an account yet, so there is no
+`user_settings` row to consult: like the confirmation email it is transactional
+and always sends.
+
+**Never put a placeholder inside a `<Heading>`.** The plain-text render
+uppercases headings, so `{{groupName}}` becomes `{{GROUPNAME}}` — a token SES
+does not substitute, leaving the raw braces visible to anyone reading the text
+part. `src/verify.ts` fails the build when the text and HTML parts disagree on
+a placeholder's case.
+
 ## Implementation instructions
 
 1. Install `@aws-sdk/client-sesv2`.

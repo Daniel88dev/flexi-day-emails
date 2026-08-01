@@ -14,6 +14,8 @@ import type { ManifestEntry } from "./render";
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const outDir = path.join(root, "out");
 
+const PLACEHOLDER_RE = /\{\{\s*([a-zA-Z0-9_.]+)\s*\}\}/g;
+
 const ESCAPED_PATTERNS: [string, RegExp][] = [
   ["URL-encoded braces (%7B/%7D)", /%7B|%7D/i],
   ["HTML-entity braces (&#123; / &#x7b;)", /&#0*123;|&#x0*7b;/i],
@@ -42,7 +44,30 @@ async function main() {
 
     for (const [label, pattern] of ESCAPED_PATTERNS) {
       if (pattern.test(html)) {
-        errors.push(`${entry.name}: HTML contains ${label} — a placeholder got escaped`);
+        errors.push(
+          `${entry.name}: HTML contains ${label} — a placeholder got escaped`
+        );
+      }
+    }
+
+    // The plain-text render uppercases headings, so a placeholder inside one
+    // comes out as {{GROUPNAME}} while the HTML keeps {{groupName}}. SES
+    // substitutes neither reliably and the reader sees the raw token. The HTML
+    // part is authoritative (asserted un-escaped above), so any text token that
+    // only matches an HTML one case-insensitively has been mangled.
+    const htmlTokens = new Set(
+      [...html.matchAll(PLACEHOLDER_RE)].map((match) => match[1] as string)
+    );
+    for (const match of text.matchAll(PLACEHOLDER_RE)) {
+      const token = match[1] as string;
+      if (htmlTokens.has(token)) continue;
+      const original = [...htmlTokens].find(
+        (candidate) => candidate.toLowerCase() === token.toLowerCase()
+      );
+      if (original) {
+        errors.push(
+          `${entry.name}: text part has {{${token}}} but the HTML has {{${original}}} — a placeholder was case-mangled. Headings are uppercased in the text render; keep placeholders out of them.`
+        );
       }
     }
 
