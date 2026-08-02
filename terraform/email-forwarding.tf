@@ -157,7 +157,7 @@ resource "aws_iam_role_policy" "forwarder" {
 resource "aws_lambda_function" "forwarder" {
   function_name    = "${var.project_name}-ses-forwarder"
   role             = aws_iam_role.forwarder.arn
-  runtime          = "nodejs20.x"
+  runtime          = "nodejs24.x"
   handler          = "index.handler"
   filename         = data.archive_file.forwarder.output_path
   source_code_hash = data.archive_file.forwarder.output_base64sha256
