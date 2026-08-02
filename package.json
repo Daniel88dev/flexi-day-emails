@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@react-email/preview-server": "^5.2.11",
-    "@types/node": "^22.15.0",
+    "@types/node": "^24.6.2",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "tsx": "^4.19.0",
@@ -30,6 +30,6 @@
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=24"
   }
 }
