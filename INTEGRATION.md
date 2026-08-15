@@ -95,6 +95,24 @@ does not substitute, leaving the raw braces visible to anyone reading the text
 part. `src/verify.ts` fails the build when the text and HTML parts disagree on
 a placeholder's case.
 
+## Subscription grace template
+
+`subscription-grace` is sent by flexi-day-be's Paddle webhook handler when a
+subscription payment fails or the subscription is cancelled. Full limits keep
+working through a 14-day grace window; after `graceEndsDate`, groups over the
+plan's limits become read-only (nothing is deleted).
+
+| Template             | Recipient                        | Variables                                                  |
+| -------------------- | -------------------------------- | ---------------------------------------------------------- |
+| `subscription-grace` | the organization's billing email | `recipientName`, `planName`, `graceEndsDate`, `billingUrl` |
+
+- `planName` is the plan's display token (`PRO` / `ENTERPRISE`).
+- `graceEndsDate` is a pre-formatted human date (e.g. `25 August 2026`) — the
+  backend formats it; the template must not.
+- `billingUrl` points at the app's billing page (`{APP_URL}/billing/`).
+
+It is billing mail, so it ignores `user_settings.emailNotifications`.
+
 ## Implementation instructions
 
 1. Install `@aws-sdk/client-sesv2`.
