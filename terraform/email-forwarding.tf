@@ -32,14 +32,27 @@ resource "aws_route53_record" "mx" {
   records = ["10 inbound-smtp.${var.aws_region}.amazonaws.com"]
 }
 
+# Route 53 keeps every TXT value for one name in a SINGLE record set, so this
+# resource owns the apex TXT outright — anything else that needs a TXT on
+# flexi-day.com has to be added to `records` here rather than declared as its
+# own aws_route53_record, which would either fail as "already exists" or (with
+# allow_overwrite) silently drop SPF and break deliverability. That is why the
+# Microsoft Entra domain-ownership token lives in this repo and not next to the
+# rest of the Entra wiring in flexi-day-be/terraform.
 resource "aws_route53_record" "spf" {
-  count = var.manage_spf_record ? 1 : 0
+  # Exists when EITHER value is wanted. Gating solely on manage_spf_record —
+  # whose own purpose is "SPF is managed elsewhere" — would have taken the
+  # Entra token down with it and silently un-verified the domain.
+  count = var.manage_spf_record || var.entra_domain_verification_txt != "" ? 1 : 0
 
   zone_id = data.aws_route53_zone.main.zone_id
   name    = var.hosted_zone_name
   type    = "TXT"
   ttl     = 300
-  records = ["v=spf1 include:amazonses.com ~all"]
+  records = concat(
+    var.manage_spf_record ? ["v=spf1 include:amazonses.com ~all"] : [],
+    var.entra_domain_verification_txt != "" ? [var.entra_domain_verification_txt] : []
+  )
 }
 
 # --- S3: raw inbound messages, auto-expired -----------------------------------
