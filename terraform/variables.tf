@@ -76,3 +76,27 @@ variable "manage_spf_record" {
   type        = bool
   default     = true
 }
+
+variable "entra_domain_verification_txt" {
+  description = "Microsoft Entra domain-ownership token (the MS=ms... string Entra shows under Domain names -> Add custom domain). Published in the apex TXT record next to SPF; empty publishes no token."
+  type        = string
+
+  # The live token is the default on purpose. It is public DNS data — anyone can
+  # read it with `dig TXT flexi-day.com` — and defaulting to "" made the record
+  # non-reproducible: this repo has no terraform.tfvars, so an ordinary apply
+  # from any checkout would have quietly dropped the token and un-verified the
+  # domain in Entra.
+  default = "MS=ms70521600"
+
+  # `can(regex(...))` rather than `startswith`, which needs Terraform >= 1.3
+  # while provider.tf only requires >= 1.0. The charset check also rejects a
+  # truncated "MS=" or a value with trailing whitespace, neither of which Entra
+  # would ever match.
+  validation {
+    condition = (
+      var.entra_domain_verification_txt == "" ||
+      can(regex("^MS=[A-Za-z0-9]+$", var.entra_domain_verification_txt))
+    )
+    error_message = "Expected the whole token as shown by Entra, e.g. \"MS=ms12345678\"."
+  }
+}
