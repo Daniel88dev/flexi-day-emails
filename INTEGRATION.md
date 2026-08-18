@@ -72,6 +72,24 @@ password existed.
 Account mail: it always sends, regardless of
 `user_settings.emailNotifications`.
 
+## Two-factor sign-in code template
+
+`two-factor-code` is sent by the better-auth `twoFactor` plugin's `sendOTP`
+hook when a user with 2FA enabled requests a code by email — at sign-in or
+while enrolling from Settings.
+
+| Template          | Recipient         | Variables                   |
+| ----------------- | ----------------- | --------------------------- |
+| `two-factor-code` | the account owner | `name`, `code`, `expiresIn` |
+
+`code` is the 6-digit OTP, passed as a **string** (a leading zero must
+survive). `expiresIn` is pre-formatted (e.g. `"3 minutes"`) and must match the
+plugin's OTP expiry. The subject deliberately carries no code — it would leak
+into lock-screen and inbox previews.
+
+Security mail: it always sends, regardless of
+`user_settings.emailNotifications`.
+
 ## Vacation workflow templates
 
 Four more templates cover the request lifecycle. They follow the same naming

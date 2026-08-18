@@ -27,10 +27,15 @@ terraform/               SES identity + DKIM + config set + GitHub OIDC role
 | Template                    | Sent when                                                   |
 | --------------------------- | ----------------------------------------------------------- |
 | `email-confirmation`        | a new account must confirm its address (better-auth)        |
+| `password-reset`            | someone asks to set a new password (better-auth)            |
+| `two-factor-code`           | a 2FA code is requested — at sign-in or while enrolling     |
+| `group-invite`              | a group admin invites someone by email                      |
+| `subscription-grace`        | a payment fails or a subscription is cancelled              |
 | `vacation-approval-request` | an employee submits a request their approver must decide on |
 | `vacation-approved`         | an approver accepts a request                               |
 | `vacation-rejected`         | an approver declines a request                              |
 | `vacation-cancelled`        | already-approved time off is cancelled                      |
+| `vacation-comment`          | requester or approver comments on a request                 |
 
 Variable contracts live in [INTEGRATION.md](INTEGRATION.md).
 
