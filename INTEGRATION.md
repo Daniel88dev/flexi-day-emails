@@ -17,13 +17,14 @@ here.
   no Cognito in this stack, so no custom-message Lambda trigger is needed —
   wire SES directly into better-auth's hooks.
 - `src/utils/auth.ts` configures better-auth with
-  `emailVerification.sendVerificationEmail: async ({ user, url, token }) => ...`,
-  currently calling the console-logging stub `tempEmailSend`
-  (`src/utils/tempEmail.ts`), which **silently skips sending in production**.
-  That stub is what you are replacing for verification emails.
-- `sendResetPassword` also uses the stub. Only the confirmation template
-  exists in SES so far — leave password reset on the stub (or plain-text
-  send) and note it as a follow-up.
+  `emailVerification.sendVerificationEmail: async ({ user, url, token }) => ...`.
+  This originally called the console-logging stub `tempEmailSend`
+  (`src/utils/tempEmail.ts`), which **silently skipped sending in production**.
+  That stub was what you replaced for verification emails.
+- `sendResetPassword` used the same stub, which meant password reset sent
+  nothing at all in production. It now uses the `password-reset` template
+  below. With no callers left, `src/utils/tempEmail.ts` has been deleted —
+  `logEmailSender` covers the no-AWS case.
 
 ## SES template contract
 
@@ -46,6 +47,30 @@ empty strings, so validate before sending):
 Configuration set (optional but available): `flexi-day-emails-dev` /
 `flexi-day-emails-production`. Sender address must be on the verified
 `flexi-day.com` domain, e.g. `no-reply@flexi-day.com`.
+
+## Password reset template
+
+`password-reset` is sent by better-auth's `sendResetPassword` hook when
+someone asks for a reset from `/forgot-password/`.
+
+| Template         | Recipient         | Variables                       |
+| ---------------- | ----------------- | ------------------------------- |
+| `password-reset` | the account owner | `name`, `resetUrl`, `expiresIn` |
+
+`resetUrl` points at better-auth's **own** endpoint
+(`{API}/api/auth/reset-password/{token}?callbackURL=…`), not at the frontend:
+that endpoint checks the token before bouncing the browser to
+`{APP_URL}/reset-password/` with it. The backend overwrites `callbackURL`
+rather than trusting the one the request carried, so the mailed link always
+lands on a page that can handle it.
+
+This is also how someone who only ever signed in with Google or Microsoft
+gets a password — better-auth's `resetPassword` creates the credential
+account when the user has none — so the copy must not assume a previous
+password existed.
+
+Account mail: it always sends, regardless of
+`user_settings.emailNotifications`.
 
 ## Vacation workflow templates
 
@@ -185,8 +210,10 @@ It is billing mail, so it ignores `user_settings.emailNotifications`.
    }
    ```
 
-   Keep `tempEmailSend` as the implementation when `config.api.env === "test"`
-   (and optionally `"dev"` without AWS credentials) so tests don't hit AWS.
+   Swap the sender for `logEmailSender` when `config.api.env === "test"` (and
+   in `"dev"` without AWS credentials) so tests don't hit AWS. `src/services/
+email/index.ts` already does this — do not reintroduce the old
+   `tempEmailSend` stub, which is deleted.
 
 5. Handle send failures: log via the existing `logger` middleware and do not
    crash signup — better-auth surfaces resend, and a failed email must not
