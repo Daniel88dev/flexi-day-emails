@@ -72,7 +72,7 @@ const isThrottled = (err: unknown): boolean =>
 
 const sendPaced = async <T>(
   label: string,
-  send: () => Promise<T>
+  send: () => Promise<T>,
 ): Promise<T> => {
   for (let attempt = 1; ; attempt++) {
     await pace();
@@ -83,8 +83,8 @@ const sendPaced = async <T>(
       const backoff = PACE_MS * 2 ** attempt;
       console.warn(
         `  ${label}: throttled by SES, retrying in ${(backoff / 1000).toFixed(
-          1
-        )}s ` + `(attempt ${String(attempt)}/${String(MAX_ATTEMPTS - 1)})`
+          1,
+        )}s ` + `(attempt ${String(attempt)}/${String(MAX_ATTEMPTS - 1)})`,
       );
       await sleep(backoff);
       nextSlot = Date.now();
@@ -96,7 +96,7 @@ function getStage(): Stage {
   const stage = process.env.STAGE;
   if (!stage || !(STAGES as readonly string[]).includes(stage)) {
     throw new Error(
-      `STAGE must be one of ${STAGES.join(", ")} (got "${stage ?? ""}")`
+      `STAGE must be one of ${STAGES.join(", ")} (got "${stage ?? ""}")`,
     );
   }
   return stage as Stage;
@@ -108,7 +108,7 @@ async function main() {
   const client = new SESv2Client({ region });
 
   const manifest = JSON.parse(
-    await readFile(path.join(outDir, "manifest.json"), "utf8")
+    await readFile(path.join(outDir, "manifest.json"), "utf8"),
   ) as ManifestEntry[];
 
   let synced = 0;
@@ -127,8 +127,8 @@ async function main() {
             new UpdateEmailTemplateCommand({
               TemplateName: templateName,
               TemplateContent,
-            })
-          )
+            }),
+          ),
         );
         console.log(`updated ${templateName} (${region})`);
       } catch (err) {
@@ -138,8 +138,8 @@ async function main() {
             new CreateEmailTemplateCommand({
               TemplateName: templateName,
               TemplateContent,
-            })
-          )
+            }),
+          ),
         );
         console.log(`created ${templateName} (${region})`);
       }
@@ -150,14 +150,14 @@ async function main() {
     // only has to redo the rest, and re-doing all of it is harmless anyway.
     console.error(
       `\nfailed after ${String(synced)}/${String(
-        manifest.length
-      )} template(s) — ` + `re-run \`npm run sync:${stage}\` to finish.\n`
+        manifest.length,
+      )} template(s) — ` + `re-run \`npm run sync:${stage}\` to finish.\n`,
     );
     throw err;
   }
 
   console.log(
-    `synced ${String(manifest.length)} template(s) to stage "${stage}"`
+    `synced ${String(manifest.length)} template(s) to stage "${stage}"`,
   );
 }
 

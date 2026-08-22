@@ -24,7 +24,7 @@ const ESCAPED_PATTERNS: [string, RegExp][] = [
 
 async function main() {
   const manifest = JSON.parse(
-    await readFile(path.join(outDir, "manifest.json"), "utf8")
+    await readFile(path.join(outDir, "manifest.json"), "utf8"),
   ) as ManifestEntry[];
 
   const errors: string[] = [];
@@ -37,7 +37,7 @@ async function main() {
       const token = `{{${variable}}}`;
       if (!html.includes(token) && !text.includes(token)) {
         errors.push(
-          `${entry.name}: expected literal ${token} in HTML or text output`
+          `${entry.name}: expected literal ${token} in HTML or text output`,
         );
       }
     }
@@ -45,7 +45,7 @@ async function main() {
     for (const [label, pattern] of ESCAPED_PATTERNS) {
       if (pattern.test(html)) {
         errors.push(
-          `${entry.name}: HTML contains ${label} — a placeholder got escaped`
+          `${entry.name}: HTML contains ${label} — a placeholder got escaped`,
         );
       }
     }
@@ -56,17 +56,17 @@ async function main() {
     // part is authoritative (asserted un-escaped above), so any text token that
     // only matches an HTML one case-insensitively has been mangled.
     const htmlTokens = new Set(
-      [...html.matchAll(PLACEHOLDER_RE)].map((match) => match[1] as string)
+      [...html.matchAll(PLACEHOLDER_RE)].map((match) => match[1] as string),
     );
     for (const match of text.matchAll(PLACEHOLDER_RE)) {
       const token = match[1] as string;
       if (htmlTokens.has(token)) continue;
       const original = [...htmlTokens].find(
-        (candidate) => candidate.toLowerCase() === token.toLowerCase()
+        (candidate) => candidate.toLowerCase() === token.toLowerCase(),
       );
       if (original) {
         errors.push(
-          `${entry.name}: text part has {{${token}}} but the HTML has {{${original}}} — a placeholder was case-mangled. Headings are uppercased in the text render; keep placeholders out of them.`
+          `${entry.name}: text part has {{${token}}} but the HTML has {{${original}}} — a placeholder was case-mangled. Headings are uppercased in the text render; keep placeholders out of them.`,
         );
       }
     }
@@ -77,7 +77,7 @@ async function main() {
       const href = match[1] as string;
       if (/[{}%]/.test(href) && !/^\{\{[a-zA-Z0-9_.]+\}\}$/.test(href)) {
         errors.push(
-          `${entry.name}: suspicious href "${href}" — placeholder may be mangled`
+          `${entry.name}: suspicious href "${href}" — placeholder may be mangled`,
         );
       }
     }
@@ -88,7 +88,7 @@ async function main() {
     process.exit(1);
   }
   console.log(
-    `verified ${manifest.length} template(s): placeholders intact, no escaping`
+    `verified ${manifest.length} template(s): placeholders intact, no escaping`,
   );
 }
 
