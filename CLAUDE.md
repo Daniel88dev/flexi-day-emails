@@ -35,3 +35,20 @@ Add the component under `emails/`, share styling through `src/styles.ts` / `src/
 `src/components/` rather than inlining, then `npm run build` to confirm it renders and verifies.
 A new template only reaches the backend once `sync:dev` / `sync:prod` has pushed it and the backend
 sends that name — see [`INTEGRATION.md`](INTEGRATION.md) for the send-side contract.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in this repo's GitHub Issues, reached with the `gh` CLI. See
+[`docs/agents/issue-tracker.md`](docs/agents/issue-tracker.md).
+
+### Triage labels
+
+The five canonical triage roles, each label string equal to its name. See
+[`docs/agents/triage-labels.md`](docs/agents/triage-labels.md).
+
+### Domain docs
+
+Single-context: `CONTEXT.md` and `docs/adr/` at the repo root. See
+[`docs/agents/domain.md`](docs/agents/domain.md).
