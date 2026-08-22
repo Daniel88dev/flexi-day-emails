@@ -91,7 +91,7 @@ async function main() {
   await writeFile(
     path.join(outDir, "manifest.json"),
     JSON.stringify(manifest, null, 2),
-    "utf8"
+    "utf8",
   );
   console.log(`wrote manifest.json with ${manifest.length} template(s)`);
 }

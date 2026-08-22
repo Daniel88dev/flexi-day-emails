@@ -10,7 +10,9 @@
     "build": "tsx src/render.ts && tsx src/verify.ts",
     "sync": "npm run build && tsx src/sync-templates.ts",
     "sync:dev": "STAGE=dev npm run sync",
-    "sync:prod": "STAGE=prod npm run sync"
+    "sync:prod": "STAGE=prod npm run sync",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1108.0",
@@ -27,6 +29,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@typescript/native": "npm:typescript@^7.0.2",
+    "prettier": "3.9.6",
     "tsx": "^4.23.12",
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   },

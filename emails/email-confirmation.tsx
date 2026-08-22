@@ -1,7 +1,14 @@
 import { Heading, Hr, Link, Section, Text } from "@react-email/components";
 import { Button } from "../src/components/Button";
 import { EmailLayout } from "../src/components/EmailLayout";
-import { buttonSection, divider, heading, link, muted, paragraph } from "../src/styles";
+import {
+  buttonSection,
+  divider,
+  heading,
+  link,
+  muted,
+  paragraph,
+} from "../src/styles";
 
 /**
  * Email-address confirmation, sent by better-auth's sendVerificationEmail
@@ -33,8 +40,8 @@ export default function EmailConfirmation({
       </Heading>
       <Text style={paragraph}>Hi {name},</Text>
       <Text style={paragraph}>
-        Thanks for signing up for flexiday. Please confirm your email address
-        so your team can start tracking vacations and flexible days together.
+        Thanks for signing up for flexiday. Please confirm your email address so
+        your team can start tracking vacations and flexible days together.
       </Text>
       <Section style={buttonSection}>
         <Button href={confirmationUrl}>Confirm email address</Button>
