@@ -22,3 +22,7 @@ terraform/.build/
 # editor / os
 .idea/
 .DS_Store
+
+# Claude Code: share config, keep machine-local permissions out
+.claude/settings.local.json
+.claude/worktrees/
