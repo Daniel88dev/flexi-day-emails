@@ -4,6 +4,15 @@ Guidance for Claude Code working in `flexi-day-emails`, the transactional email 
 Flexi Day. React Email components in `emails/` are rendered to **native SES templates** and pushed
 to AWS SES; `flexi-day-be` sends them by name and never renders HTML itself.
 
+## Infrastructure
+
+[`terraform/README.md`](terraform/README.md) — read before changing anything in `terraform/`. It
+owns the IAM role GitHub Actions assumes to sync templates, and inbound mail forwarding
+(`support@flexi-day.com` to a personal inbox via S3 and a Lambda). The SES domain identity and the
+`flexi-day-emails-production` configuration set are verified by hand and deliberately stay out of
+Terraform. This repo has **no** `terraform.tfvars`, so every variable's default is the live value
+and an apply from any checkout publishes those defaults, including the Entra DNS token.
+
 ## Handlebars placeholders must survive rendering literally
 
 SES substitutes `{{variable}}` tokens at send time, so they have to reach the rendered template

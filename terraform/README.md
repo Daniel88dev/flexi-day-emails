@@ -18,6 +18,21 @@ These already exist in the AWS account and are referenced/assumed, not created:
 | Configuration set `flexi-day-emails-production`     | SES console                   | Created manually; the backend just references its name                                        |
 | OIDC provider `token.actions.githubusercontent.com` | IAM, account-global           | Shared with `flexi-day-be`; looked up via data source (`create_github_oidc_provider = false`) |
 
+## Changing a variable
+
+There is no `terraform.tfvars` in this repo and `*.tfvars` is gitignored, so **every default in
+`variables.tf` is the live production value**. A new variable defaulting to `""` is one that quietly
+applies as empty from any checkout, which is how the Entra domain token nearly got dropped from DNS
+(see the comment on `entra_domain_verification_txt`). Give each variable a real default, and a
+`validation` block when the format is checkable.
+
+That also means this config cannot hold a secret. Nothing here needs one today. If something ever
+does, introduce a `terraform.tfvars` for it and note it here rather than defaulting it in
+`variables.tf`.
+
+`terraform.tfvars.example` still documents the two OIDC variables, which are what a fresh AWS
+account has to change.
+
 ## Apply
 
 ```sh
