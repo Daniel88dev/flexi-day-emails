@@ -15,7 +15,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@aws-sdk/client-sesv2": "^3.1128.0",
+    "@aws-sdk/client-sesv2": "^3.1131.0",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.1.0",
     "react": "^19.3.0",
