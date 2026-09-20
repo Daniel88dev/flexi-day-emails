@@ -36,6 +36,12 @@ Add the component under `emails/`, share styling through `src/styles.ts` / `src/
 A new template only reaches the backend once `sync:dev` / `sync:prod` has pushed it and the backend
 sends that name — see [`INTEGRATION.md`](INTEGRATION.md) for the send-side contract.
 
+## Merging pull requests
+
+Never merge a PR yourself — no `gh pr merge`, no merge button, no auto-merge — unless the user
+asks for that merge outright. Push the branch, open the PR, report CI, and stop. Opening a PR is
+not permission to merge it, and one merge the user asked for does not carry to the next.
+
 ## Agent skills
 
 ### Issue tracker
