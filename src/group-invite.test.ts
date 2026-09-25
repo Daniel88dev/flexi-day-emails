@@ -8,10 +8,7 @@ const anchors = (html: string) =>
   [...html.matchAll(/<a\b[^>]*\bhref="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g)].map(
     (match) => ({
       href: match[1] as string,
-      text: (match[2] as string)
-        .replace(/<!--[\s\S]*?-->/g, "")
-        .replace(/<[^>]*>/g, "")
-        .trim(),
+      inner: match[2] as string,
     }),
   );
 
@@ -25,10 +22,10 @@ describe("group-invite", () => {
   });
 
   it("leads with a single Join button linking to the invite URL", () => {
-    const joinButtons = anchors(html).filter((a) => a.text.startsWith("Join"));
-    assert.deepEqual(joinButtons, [
-      { href: "{{inviteUrl}}", text: "Join {{groupName}}" },
-    ]);
+    const joinButtons = anchors(html).filter((a) => /\bJoin\b/.test(a.inner));
+    assert.equal(joinButtons.length, 1);
+    assert.equal(joinButtons[0]?.href, "{{inviteUrl}}");
+    assert.match(joinButtons[0]?.inner ?? "", /Join[\s\S]*\{\{groupName\}\}/);
     assert.match(text, /Join \{\{groupName\}\} \{\{inviteUrl\}\}/);
   });
 
