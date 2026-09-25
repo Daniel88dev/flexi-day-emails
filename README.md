@@ -18,6 +18,7 @@ src/components/          shared layout: Logo, EmailLayout, Button, LeaveSummary
 src/render.ts            renders all templates to out/ (HTML + text + manifest)
 src/verify.ts            asserts {{placeholders}} survived rendering
 src/sync-templates.ts    idempotent upsert to SES via @aws-sdk/client-sesv2
+src/*.test.ts            render checks for individual templates (npm test)
 terraform/               SES identity + DKIM + config set + GitHub OIDC role
 .github/workflows/       CI: verify on PR, sync on main (dev → approved prod)
 ```
@@ -112,7 +113,8 @@ Notes:
 
 ## CI flow (`.github/workflows/deploy.yml`)
 
-- **Pull request**: `npm ci` → typecheck → render + placeholder verification.
+- **Pull request**: `npm ci` → typecheck → render checks (`npm test`) → render +
+  placeholder verification.
   A broken or escaped `{{token}}` fails the PR.
 - **Push to `main`**: same build, then sync to **dev** automatically, then
   sync to **prod** gated by the `production` GitHub environment. Configure a

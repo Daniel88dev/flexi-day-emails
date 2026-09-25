@@ -12,10 +12,8 @@ import {
 } from "../src/styles";
 
 /**
- * Sent when a group admin invites someone by email. The invite code lives in
- * the body only — `signUpUrl` is the plain sign-up page and carries nothing,
- * so forwarding the link alone grants no access. Triggered by flexi-day-be
- * from POST /api/group-user/{groupId}/invites.
+ * Sent when a group admin invites someone by email. Triggered by flexi-day-be
+ * from POST /api/group-user/{groupId}/invites. Link vs code: see INTEGRATION.md.
  *
  * The default props are literal SES/Handlebars placeholders. `render()` must
  * output them untouched — the build asserts this (src/verify.ts).
@@ -29,8 +27,7 @@ interface GroupInviteProps {
   groupName?: string;
   inviterName?: string;
   inviteCode?: string;
-  signUpUrl?: string;
-  joinUrl?: string;
+  inviteUrl?: string;
   invitedEmail?: string;
   expiresIn?: string;
 }
@@ -39,15 +36,14 @@ export default function GroupInvite({
   groupName = "{{groupName}}",
   inviterName = "{{inviterName}}",
   inviteCode = "{{inviteCode}}",
-  signUpUrl = "{{signUpUrl}}",
-  joinUrl = "{{joinUrl}}",
+  inviteUrl = "{{inviteUrl}}",
   invitedEmail = "{{invitedEmail}}",
   expiresIn = "{{expiresIn}}",
 }: GroupInviteProps) {
   return (
     <EmailLayout
       preview="You have been invited to join a team on flexiday"
-      footerNote="You received this email because someone invited you to their team on flexiday. If you weren't expecting it, you can ignore this message — the code does nothing until it is used."
+      footerNote="You received this email because someone invited you to their team on flexiday. If you weren't expecting it, you can ignore this message — nothing happens until the invite is used."
     >
       {/*
        * No placeholder in the heading: the plain-text render uppercases
@@ -61,56 +57,34 @@ export default function GroupInvite({
         {inviterName} invited you to join <strong>{groupName}</strong> on
         flexiday, where the team books and tracks time off.
       </Text>
-
-      <Text style={stepHeading}>Your invite code</Text>
-      <Section style={codeBox}>
-        <Text style={codeText}>{inviteCode}</Text>
+      <Section style={buttonSection}>
+        <Button href={inviteUrl}>Join {groupName}</Button>
       </Section>
       <Text style={muted}>
-        This code works once, only for {invitedEmail}, and expires in{" "}
+        This invite works once, only for {invitedEmail}, and expires in{" "}
         {expiresIn}.
       </Text>
-
-      <Hr style={divider} />
-
-      <Text style={stepHeading}>How to join</Text>
-      <Text style={paragraph}>
-        <strong>1.</strong> Create your flexiday account using this email
-        address — {invitedEmail}. The code only works for that address, so
-        please don&apos;t sign up with a different one. You don&apos;t need to
-        enter a company or team name.
-      </Text>
-      <Section style={buttonSection}>
-        <Button href={signUpUrl}>Create your account</Button>
-      </Section>
-      <Text style={paragraph}>
-        <strong>2.</strong> Confirm your email address using the message we send
-        you right after sign-up.
-      </Text>
-      <Text style={paragraph}>
-        <strong>3.</strong> Open <strong>Groups</strong>, paste the code above
-        into <strong>Join a group</strong>, and you&apos;re in.
-      </Text>
-
-      <Text style={muted}>
-        Already have a flexiday account? Skip step 1 and go straight to Groups:
-      </Text>
-      <Text style={muted}>
-        <Link href={joinUrl} style={link}>
-          {joinUrl}
-        </Link>
-      </Text>
-
-      <Hr style={divider} />
-
       <Text style={muted}>
         If the button doesn&apos;t work, copy and paste this link into your
         browser:
       </Text>
       <Text style={muted}>
-        <Link href={signUpUrl} style={link}>
-          {signUpUrl}
+        <Link href={inviteUrl} style={link}>
+          {inviteUrl}
         </Link>
+      </Text>
+
+      <Hr style={divider} />
+
+      <Text style={muted}>
+        Or paste this code in <strong>Groups</strong>:
+      </Text>
+      <Section style={codeBox}>
+        <Text style={codeText}>{inviteCode}</Text>
+      </Section>
+      <Text style={muted}>
+        The code only works once your email address is confirmed. The Join
+        button confirms it for you.
       </Text>
       <Text style={muted}>
         Once you join, your time off in {groupName} is approved by that
@@ -119,15 +93,6 @@ export default function GroupInvite({
     </EmailLayout>
   );
 }
-
-const stepHeading = {
-  fontSize: "13px",
-  fontWeight: 700,
-  letterSpacing: "0.06em",
-  textTransform: "uppercase" as const,
-  color: colors.textMuted,
-  margin: "0 0 10px",
-};
 
 const codeBox = {
   backgroundColor: colors.surfaceMuted,

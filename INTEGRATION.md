@@ -120,17 +120,37 @@ confirmation email is transactional and always sends.
 (`POST /api/group-user/{groupId}/invites` in flexi-day-be). It follows the same
 naming convention and the same all-variables-non-empty rule.
 
-| Template       | Recipient          | Variables                                                                                     |
-| -------------- | ------------------ | --------------------------------------------------------------------------------------------- |
-| `group-invite` | the invited person | `groupName`, `inviterName`, `inviteCode`, `signUpUrl`, `joinUrl`, `invitedEmail`, `expiresIn` |
+| Template       | Recipient          | Variables                                                                          |
+| -------------- | ------------------ | ---------------------------------------------------------------------------------- |
+| `group-invite` | the invited person | `groupName`, `inviterName`, `inviteCode`, `inviteUrl`, `invitedEmail`, `expiresIn` |
 
-The code lives in the email **body only** — `signUpUrl` is the plain sign-up
-page and carries no token, so forwarding the link alone grants nothing. The
-code is single-use, bound to `invitedEmail`, and expires after `expiresIn`.
+`inviteUrl` is the **invite link**, `{APP_URL}/join/?token=<secret>`, and it
+replaces `signUpUrl` and `joinUrl`. The email leads with one "Join
+`groupName`" button pointing at it, and prints `inviteCode` below as a
+fallback to paste in Groups.
+
+The link secret only ever travels to `invitedEmail`, so following the link
+proves the invitee owns that mailbox: the join page signs them up or in, joins
+the group, and **verifies the address** in the same step, with no confirmation
+email. The code proves nothing about the mailbox, since the admin knows it, so
+redeeming by code still requires an already verified address. Both are
+single-use, bound to `invitedEmail`, expire after `expiresIn`, and redeeming
+either one consumes the invite.
 
 This one goes to an address that may not have an account yet, so there is no
 `user_settings` row to consult: like the confirmation email it is transactional
 and always sends.
+
+**Rollout order.** SES renders a missing variable as an empty string, so this
+template must not reach SES before the backend sends `inviteUrl`, or the Join
+button goes out with an empty link. Merging to `main` syncs templates to SES,
+so the order is:
+
+1. flexi-day-be sends `inviteUrl` alongside `signUpUrl` and `joinUrl`, deployed
+   to the environment each stage serves.
+2. This template merges and syncs to dev, then prod.
+3. flexi-day-be stops sending `signUpUrl` and `joinUrl`, once the new template
+   is live in both stages.
 
 **Never put a placeholder inside a `<Heading>`.** The plain-text render
 uppercases headings, so `{{groupName}}` becomes `{{GROUPNAME}}` — a token SES
