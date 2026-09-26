@@ -12,7 +12,8 @@
     "sync:dev": "STAGE=dev npm run sync",
     "sync:prod": "STAGE=prod npm run sync",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test": "tsx --test src/*.test.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1133.0",

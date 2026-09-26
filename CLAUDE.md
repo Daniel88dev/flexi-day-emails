@@ -27,7 +27,9 @@ markdown — and interpolate them as plain JSX text or raw attribute values. `np
 `eu-central-1` — the exact names the backend resolves via `EMAIL_TEMPLATE_STAGE`. `npm run dev`
 opens the React Email preview, which binds `:3000` and so collides with the frontend dev server.
 
-There are no tests and no lint. `npm run typecheck` plus `npm run build` is the full check.
+There is no lint. `npm run typecheck`, `npm test` (render checks in `src/*.test.ts`, run with
+`node:test`) and `npm run build` are the full check. Keep test files out of `emails/`: `render.ts`
+renders every `.tsx` there as a template.
 
 ## Adding a template
 
