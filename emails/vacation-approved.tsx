@@ -2,14 +2,7 @@ import { Heading, Hr, Link, Section, Text } from "@react-email/components";
 import { Button } from "../src/components/Button";
 import { EmailLayout } from "../src/components/EmailLayout";
 import { LeaveSummary } from "../src/components/LeaveSummary";
-import {
-  buttonSection,
-  divider,
-  heading,
-  link,
-  muted,
-  paragraph,
-} from "../src/styles";
+import { buttonSection, divider, heading, link, muted, paragraph } from "../src/styles";
 
 /**
  * Sent to the requesting employee when an approver accepts their time-off
@@ -51,8 +44,7 @@ export default function VacationApproved({
       </Heading>
       <Text style={paragraph}>Hi {employeeName},</Text>
       <Text style={paragraph}>
-        {approverName} approved your request in {teamName}. It is now on the
-        team calendar.
+        {approverName} approved your request in {teamName}. It is now on the team calendar.
       </Text>
       <LeaveSummary
         rows={[
@@ -65,8 +57,7 @@ export default function VacationApproved({
         <Button href={requestUrl}>View request</Button>
       </Section>
       <Text style={muted}>
-        If the button doesn&apos;t work, copy and paste this link into your
-        browser:
+        If the button doesn&apos;t work, copy and paste this link into your browser:
       </Text>
       <Text style={muted}>
         <Link href={requestUrl} style={link}>

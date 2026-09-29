@@ -2,14 +2,7 @@ import { Heading, Hr, Link, Section, Text } from "@react-email/components";
 import { Button } from "../src/components/Button";
 import { EmailLayout } from "../src/components/EmailLayout";
 import { LeaveSummary } from "../src/components/LeaveSummary";
-import {
-  buttonSection,
-  divider,
-  heading,
-  link,
-  muted,
-  paragraph,
-} from "../src/styles";
+import { buttonSection, divider, heading, link, muted, paragraph } from "../src/styles";
 
 /**
  * Sent when someone comments on a time-off request without changing its
@@ -54,8 +47,7 @@ export default function VacationComment({
       </Heading>
       <Text style={paragraph}>Hi {recipientName},</Text>
       <Text style={paragraph}>
-        {commenterName} commented on {employeeName}&apos;s time-off request in{" "}
-        {teamName}.
+        {commenterName} commented on {employeeName}&apos;s time-off request in {teamName}.
       </Text>
       <LeaveSummary
         rows={[
@@ -68,8 +60,7 @@ export default function VacationComment({
         <Button href={requestUrl}>View request</Button>
       </Section>
       <Text style={muted}>
-        If the button doesn&apos;t work, copy and paste this link into your
-        browser:
+        If the button doesn&apos;t work, copy and paste this link into your browser:
       </Text>
       <Text style={muted}>
         <Link href={requestUrl} style={link}>
@@ -77,9 +68,7 @@ export default function VacationComment({
         </Link>
       </Text>
       <Hr style={divider} />
-      <Text style={muted}>
-        Reply on flexiday to keep the conversation in one place.
-      </Text>
+      <Text style={muted}>Reply on flexiday to keep the conversation in one place.</Text>
     </EmailLayout>
   );
 }

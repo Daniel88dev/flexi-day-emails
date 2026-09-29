@@ -1,14 +1,7 @@
 import { Heading, Hr, Link, Section, Text } from "@react-email/components";
 import { Button } from "../src/components/Button";
 import { EmailLayout } from "../src/components/EmailLayout";
-import {
-  buttonSection,
-  divider,
-  heading,
-  link,
-  muted,
-  paragraph,
-} from "../src/styles";
+import { buttonSection, divider, heading, link, muted, paragraph } from "../src/styles";
 
 /**
  * Password reset, sent by better-auth's sendResetPassword hook in
@@ -51,15 +44,14 @@ export default function PasswordReset({
       </Heading>
       <Text style={paragraph}>Hi {name},</Text>
       <Text style={paragraph}>
-        We received a request to set a new password for your flexiday account.
-        Use the button below to choose one.
+        We received a request to set a new password for your flexiday account. Use the button below
+        to choose one.
       </Text>
       <Section style={buttonSection}>
         <Button href={resetUrl}>Set a new password</Button>
       </Section>
       <Text style={muted}>
-        If the button doesn&apos;t work, copy and paste this link into your
-        browser:
+        If the button doesn&apos;t work, copy and paste this link into your browser:
       </Text>
       <Text style={muted}>
         <Link href={resetUrl} style={link}>
@@ -68,14 +60,14 @@ export default function PasswordReset({
       </Text>
       <Hr style={divider} />
       <Text style={muted}>
-        This link expires in {expiresIn} and can be used once. If you
-        didn&apos;t ask for it, you can ignore this email — your account is
-        unchanged and your current way of signing in keeps working.
+        This link expires in {expiresIn} and can be used once. If you didn&apos;t ask for it, you
+        can ignore this email — your account is unchanged and your current way of signing in keeps
+        working.
       </Text>
       <Text style={muted}>
-        If your email address has never been confirmed, setting a password also
-        confirms it and disconnects any Google or Microsoft sign-in from the
-        account. You can connect them again under Settings → Sign-in methods.
+        If your email address has never been confirmed, setting a password also confirms it and
+        disconnects any Google or Microsoft sign-in from the account. You can connect them again
+        under Settings → Sign-in methods.
       </Text>
     </EmailLayout>
   );

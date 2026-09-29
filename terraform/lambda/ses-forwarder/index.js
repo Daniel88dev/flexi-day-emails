@@ -33,14 +33,13 @@ function processMessage(emailData) {
   // Replace "From:" with the verified sender, keeping the display name.
   header = header.replace(
     /^from:[\t ]?(.*(?:\r?\n\s+.*)*)/gim,
-    (_m, from) =>
-      "From: " + from.replace(/<(.*)>/, "").trim() + " <" + FROM_EMAIL + ">",
+    (_m, from) => "From: " + from.replace(/<(.*)>/, "").trim() + " <" + FROM_EMAIL + ">"
   );
 
   if (SUBJECT_PREFIX) {
     header = header.replace(
       /^subject:[\t ]?(.*)/gim,
-      (_m, subject) => "Subject: " + SUBJECT_PREFIX + subject,
+      (_m, subject) => "Subject: " + SUBJECT_PREFIX + subject
     );
   }
 
@@ -62,7 +61,7 @@ exports.handler = async (event) => {
     new GetObjectCommand({
       Bucket: MAIL_BUCKET,
       Key: MAIL_KEY_PREFIX + messageId,
-    }),
+    })
   );
   const raw = await obj.Body.transformToString();
 
@@ -71,10 +70,8 @@ exports.handler = async (event) => {
       Source: FROM_EMAIL,
       Destinations: [FORWARD_TO],
       RawMessage: { Data: Buffer.from(processMessage(raw)) },
-    }),
+    })
   );
 
-  console.log(
-    `Forwarded ${messageId} (${recipients.join(", ")}) -> ${FORWARD_TO}`,
-  );
+  console.log(`Forwarded ${messageId} (${recipients.join(", ")}) -> ${FORWARD_TO}`);
 };
