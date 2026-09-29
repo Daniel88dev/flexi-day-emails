@@ -46,9 +46,7 @@ function extractVariables(...parts: string[]): string[] {
 }
 
 async function main() {
-  const files = (await readdir(emailsDir))
-    .filter((f) => f.endsWith(".tsx"))
-    .sort();
+  const files = (await readdir(emailsDir)).filter((f) => f.endsWith(".tsx")).sort();
   if (files.length === 0) {
     throw new Error(`No templates found in ${emailsDir}`);
   }
@@ -88,11 +86,7 @@ async function main() {
     console.log(`rendered ${name} (${manifest.at(-1)?.variables.join(", ")})`);
   }
 
-  await writeFile(
-    path.join(outDir, "manifest.json"),
-    JSON.stringify(manifest, null, 2),
-    "utf8",
-  );
+  await writeFile(path.join(outDir, "manifest.json"), JSON.stringify(manifest, null, 2), "utf8");
   console.log(`wrote manifest.json with ${manifest.length} template(s)`);
 }
 

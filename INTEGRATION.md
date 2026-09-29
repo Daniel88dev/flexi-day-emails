@@ -222,7 +222,7 @@ It is billing mail, so it ignores `user_settings.emailNotifications`.
                TemplateData: JSON.stringify(data),
              },
            },
-         }),
+         })
        );
      },
    };

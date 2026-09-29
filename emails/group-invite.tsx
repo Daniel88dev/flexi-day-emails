@@ -2,14 +2,7 @@ import { Heading, Hr, Link, Section, Text } from "@react-email/components";
 import { Button } from "../src/components/Button";
 import { EmailLayout } from "../src/components/EmailLayout";
 import { colors, radius } from "../src/theme";
-import {
-  buttonSection,
-  divider,
-  heading,
-  link,
-  muted,
-  paragraph,
-} from "../src/styles";
+import { buttonSection, divider, heading, link, muted, paragraph } from "../src/styles";
 
 /**
  * Sent when a group admin invites someone by email. Triggered by flexi-day-be
@@ -20,8 +13,7 @@ import {
  */
 
 /** SES template Subject part (placeholders allowed). */
-export const subject =
-  "{{inviterName}} invited you to join {{groupName}} on flexiday";
+export const subject = "{{inviterName}} invited you to join {{groupName}} on flexiday";
 
 interface GroupInviteProps {
   groupName?: string;
@@ -54,19 +46,17 @@ export default function GroupInvite({
         You&apos;re invited to a team
       </Heading>
       <Text style={paragraph}>
-        {inviterName} invited you to join <strong>{groupName}</strong> on
-        flexiday, where the team books and tracks time off.
+        {inviterName} invited you to join <strong>{groupName}</strong> on flexiday, where the team
+        books and tracks time off.
       </Text>
       <Section style={buttonSection}>
         <Button href={inviteUrl}>Join {groupName}</Button>
       </Section>
       <Text style={muted}>
-        This invite works once, only for {invitedEmail}, and expires in{" "}
-        {expiresIn}.
+        This invite works once, only for {invitedEmail}, and expires in {expiresIn}.
       </Text>
       <Text style={muted}>
-        If the button doesn&apos;t work, copy and paste this link into your
-        browser:
+        If the button doesn&apos;t work, copy and paste this link into your browser:
       </Text>
       <Text style={muted}>
         <Link href={inviteUrl} style={link}>
@@ -83,12 +73,11 @@ export default function GroupInvite({
         <Text style={codeText}>{inviteCode}</Text>
       </Section>
       <Text style={muted}>
-        The code only works once your email address is confirmed. The Join
-        button confirms it for you.
+        The code only works once your email address is confirmed. The Join button confirms it for
+        you.
       </Text>
       <Text style={muted}>
-        Once you join, your time off in {groupName} is approved by that
-        team&apos;s approver.
+        Once you join, your time off in {groupName} is approved by that team&apos;s approver.
       </Text>
     </EmailLayout>
   );
@@ -104,8 +93,7 @@ const codeBox = {
 };
 
 const codeText = {
-  fontFamily:
-    "ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace",
+  fontFamily: "ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace",
   fontSize: "24px",
   fontWeight: 700,
   letterSpacing: "0.12em",

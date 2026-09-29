@@ -39,22 +39,19 @@ export default function TwoFactorCode({
         Your verification code
       </Heading>
       <Text style={paragraph}>Hi {name},</Text>
-      <Text style={paragraph}>
-        Enter this code in flexiday to verify it&apos;s you:
-      </Text>
+      <Text style={paragraph}>Enter this code in flexiday to verify it&apos;s you:</Text>
       <Section style={codeBox}>
         <Text style={codeText}>{code}</Text>
       </Section>
       <Text style={muted}>
-        The code expires in {expiresIn} and works once. flexiday will never ask
-        you for it anywhere except the screen where you requested it.
+        The code expires in {expiresIn} and works once. flexiday will never ask you for it anywhere
+        except the screen where you requested it.
       </Text>
       <Hr style={divider} />
       <Text style={muted}>
-        If you didn&apos;t request a code — at sign-in or in Settings — someone
-        else may have access to your account, usually because they know your
-        password. Change your password from Settings, or use Forgot password on
-        the sign-in page. The code on its own grants no access.
+        If you didn&apos;t request a code — at sign-in or in Settings — someone else may have access
+        to your account, usually because they know your password. Change your password from
+        Settings, or use Forgot password on the sign-in page. The code on its own grants no access.
       </Text>
     </EmailLayout>
   );
@@ -70,8 +67,7 @@ const codeBox = {
 };
 
 const codeText = {
-  fontFamily:
-    "ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace",
+  fontFamily: "ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace",
   fontSize: "24px",
   fontWeight: 700,
   letterSpacing: "0.12em",

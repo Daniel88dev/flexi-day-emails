@@ -5,12 +5,10 @@ import { render } from "@react-email/render";
 import GroupInvite from "../emails/group-invite";
 
 const anchors = (html: string) =>
-  [...html.matchAll(/<a\b[^>]*\bhref="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g)].map(
-    (match) => ({
-      href: match[1] as string,
-      inner: match[2] as string,
-    }),
-  );
+  [...html.matchAll(/<a\b[^>]*\bhref="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g)].map((match) => ({
+    href: match[1] as string,
+    inner: match[2] as string,
+  }));
 
 describe("group-invite", () => {
   let html = "";

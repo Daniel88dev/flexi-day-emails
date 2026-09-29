@@ -44,22 +44,20 @@ export default function SubscriptionGrace({
       </Heading>
       <Text style={paragraph}>Hi {recipientName},</Text>
       <Text style={paragraph}>
-        We couldn&apos;t collect the latest payment for your{" "}
-        <strong>{planName}</strong> plan, or the subscription was cancelled.
-        Nothing changes right away: your teams keep their full limits until{" "}
-        <strong>{graceEndsDate}</strong>.
+        We couldn&apos;t collect the latest payment for your <strong>{planName}</strong> plan, or
+        the subscription was cancelled. Nothing changes right away: your teams keep their full
+        limits until <strong>{graceEndsDate}</strong>.
       </Text>
       <Text style={paragraph}>
-        After that date, groups over the Free plan&apos;s limits switch to
-        read-only — they stay visible, but no new requests or approvals can be
-        made in them. Nothing is ever deleted.
+        After that date, groups over the Free plan&apos;s limits switch to read-only — they stay
+        visible, but no new requests or approvals can be made in them. Nothing is ever deleted.
       </Text>
       <Section style={buttonSection}>
         <Button href={billingUrl}>Review billing</Button>
       </Section>
       <Text style={muted}>
-        Updating your payment method or resubscribing restores everything
-        instantly. If you meant to cancel, you don&apos;t need to do anything.
+        Updating your payment method or resubscribing restores everything instantly. If you meant to
+        cancel, you don&apos;t need to do anything.
       </Text>
     </EmailLayout>
   );

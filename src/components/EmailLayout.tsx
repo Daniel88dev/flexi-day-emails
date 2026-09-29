@@ -1,12 +1,4 @@
-import {
-  Body,
-  Container,
-  Head,
-  Html,
-  Preview,
-  Section,
-  Text,
-} from "@react-email/components";
+import { Body, Container, Head, Html, Preview, Section, Text } from "@react-email/components";
 import type { ReactNode } from "react";
 import { brand, colors, fonts, radius } from "../theme";
 import { Logo } from "./Logo";
@@ -24,8 +16,8 @@ interface EmailLayoutProps {
 
 const DEFAULT_FOOTER_NOTE = (
   <>
-    You received this email because an account was created with your address. If
-    that wasn&apos;t you, you can safely ignore it.
+    You received this email because an account was created with your address. If that wasn&apos;t
+    you, you can safely ignore it.
   </>
 );
 

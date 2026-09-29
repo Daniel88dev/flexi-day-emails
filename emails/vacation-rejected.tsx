@@ -2,14 +2,7 @@ import { Heading, Hr, Link, Section, Text } from "@react-email/components";
 import { Button } from "../src/components/Button";
 import { EmailLayout } from "../src/components/EmailLayout";
 import { LeaveSummary } from "../src/components/LeaveSummary";
-import {
-  buttonSection,
-  divider,
-  heading,
-  link,
-  muted,
-  paragraph,
-} from "../src/styles";
+import { buttonSection, divider, heading, link, muted, paragraph } from "../src/styles";
 
 /**
  * Sent to the requesting employee when an approver declines their time-off
@@ -67,8 +60,7 @@ export default function VacationRejected({
         <Button href={requestUrl}>View request</Button>
       </Section>
       <Text style={muted}>
-        If the button doesn&apos;t work, copy and paste this link into your
-        browser:
+        If the button doesn&apos;t work, copy and paste this link into your browser:
       </Text>
       <Text style={muted}>
         <Link href={requestUrl} style={link}>
@@ -77,8 +69,8 @@ export default function VacationRejected({
       </Text>
       <Hr style={divider} />
       <Text style={muted}>
-        Talk to your approver if the dates could work another way — you can
-        always submit a new request.
+        Talk to your approver if the dates could work another way — you can always submit a new
+        request.
       </Text>
     </EmailLayout>
   );

@@ -2,14 +2,7 @@ import { Heading, Hr, Link, Section, Text } from "@react-email/components";
 import { Button } from "../src/components/Button";
 import { EmailLayout } from "../src/components/EmailLayout";
 import { LeaveSummary } from "../src/components/LeaveSummary";
-import {
-  buttonSection,
-  divider,
-  heading,
-  link,
-  muted,
-  paragraph,
-} from "../src/styles";
+import { buttonSection, divider, heading, link, muted, paragraph } from "../src/styles";
 
 /**
  * Sent to a group's approver (main or temp) when one of their team members
@@ -54,8 +47,7 @@ export default function VacationApprovalRequest({
       </Heading>
       <Text style={paragraph}>Hi {approverName},</Text>
       <Text style={paragraph}>
-        {employeeName} requested time off in {teamName} and is waiting for your
-        decision.
+        {employeeName} requested time off in {teamName} and is waiting for your decision.
       </Text>
       <LeaveSummary
         rows={[
@@ -69,8 +61,7 @@ export default function VacationApprovalRequest({
         <Button href={requestUrl}>Review request</Button>
       </Section>
       <Text style={muted}>
-        If the button doesn&apos;t work, copy and paste this link into your
-        browser:
+        If the button doesn&apos;t work, copy and paste this link into your browser:
       </Text>
       <Text style={muted}>
         <Link href={requestUrl} style={link}>
@@ -79,8 +70,7 @@ export default function VacationApprovalRequest({
       </Text>
       <Hr style={divider} />
       <Text style={muted}>
-        Approving or declining takes a click — your teammate is notified either
-        way.
+        Approving or declining takes a click — your teammate is notified either way.
       </Text>
     </EmailLayout>
   );
