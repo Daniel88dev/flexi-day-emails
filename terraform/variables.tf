@@ -100,3 +100,19 @@ variable "entra_domain_verification_txt" {
     error_message = "Expected the whole token as shown by Entra, e.g. \"MS=ms12345678\"."
   }
 }
+
+variable "google_site_verification_txt" {
+  description = "Google Search Console domain-ownership token (the google-site-verification=... string shown under Add property -> Domain). Google Auth Platform needs it to accept www.flexi-day.com as the homepage of the OAuth consent screen. Published in the apex TXT record next to SPF; empty publishes no token."
+  type        = string
+
+  # Live token as the default, for the same reason as the Entra one above.
+  default = "google-site-verification=BPzeDpy9lghX4rBjZfWHAGfYmGVIeecBKJn-obL2haM"
+
+  validation {
+    condition = (
+      var.google_site_verification_txt == "" ||
+      can(regex("^google-site-verification=[A-Za-z0-9_-]+$", var.google_site_verification_txt))
+    )
+    error_message = "Expected the whole token as shown by Search Console, e.g. \"google-site-verification=abc123\"."
+  }
+}
