@@ -92,25 +92,26 @@ Security mail: it always sends, regardless of
 
 ## Vacation workflow templates
 
-Four more templates cover the request lifecycle. They follow the same naming
+Six more templates cover the request lifecycle. They follow the same naming
 convention (`flexi-day-<name>-<stage>`) and the same rule: **every variable
 must be present and non-empty** — pass a placeholder such as `"—"` rather than
 an empty string for optional fields (note, reason).
 
-| Template                    | Recipient                                           | Variables                                                                                                                    |
-| --------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `vacation-approval-request` | group approver                                      | `approverName`, `employeeName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `note`, `requestUrl`                       |
-| `vacation-approved`         | requesting employee                                 | `employeeName`, `approverName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `requestUrl`                               |
-| `vacation-rejected`         | requesting employee                                 | `employeeName`, `approverName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `reason`, `requestUrl`                     |
-| `vacation-cancelled`        | employee, or the approver when the employee cancels | `recipientName`, `employeeName`, `cancelledByName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `reason`, `requestUrl` |
-| `vacation-comment`          | the other party (requester ⇄ approver)              | `recipientName`, `employeeName`, `commenterName`, `teamName`, `leaveType`, `dateRange`, `message`, `requestUrl`              |
+| Template                     | Recipient                                                            | Variables                                                                                                                    |
+| ---------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `vacation-approval-request`  | group approver                                                       | `approverName`, `employeeName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `note`, `requestUrl`                       |
+| `vacation-approved`          | requesting employee                                                  | `employeeName`, `approverName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `requestUrl`                               |
+| `vacation-rejected`          | requesting employee                                                  | `employeeName`, `approverName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `reason`, `requestUrl`                     |
+| `vacation-cancelled`         | employee, or the approver when the employee cancels                  | `recipientName`, `employeeName`, `cancelledByName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `reason`, `requestUrl` |
+| `vacation-comment`           | the other party (requester ⇄ approver)                               | `recipientName`, `employeeName`, `commenterName`, `teamName`, `leaveType`, `dateRange`, `message`, `requestUrl`              |
+| `vacation-request-cancelled` | requesting employee, when someone else cancels their pending request | `employeeName`, `cancelledByName`, `teamName`, `leaveType`, `dateRange`, `dayCount`, `reason`, `requestUrl`                  |
 
 `requestUrl` is an absolute frontend URL pointing at the request
 (`https://www.flexi-day.com/requests/?vacationId=…`). `dateRange` and
 `dayCount` are pre-formatted by the backend (e.g. `"12 – 16 Aug 2026"`,
 `"5 days"`) so the templates stay free of formatting logic.
 
-All four are workflow notifications and must respect the recipient's
+All six are workflow notifications and must respect the recipient's
 `emailNotifications` preference (`user_settings` in flexi-day-be); the
 confirmation email is transactional and always sends.
 
