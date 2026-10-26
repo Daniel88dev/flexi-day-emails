@@ -45,5 +45,15 @@ describe("directory-invite", () => {
     assert.match(text, /\{\{personName\}\}/);
     assert.match(text, /\{\{invitedEmail\}\}/);
     assert.match(text, /\{\{expiresIn\}\}/);
+    assert.match(text, /\{\{expiresInCs\}\}/);
+  });
+
+  it("gives the Czech half its own fallback link and footer clause", () => {
+    const czech = html.slice(html.indexOf('lang="cs"'));
+    const fallbacks = anchors(czech).filter((a) => a.inner.includes("{{inviteUrl}}"));
+    assert.equal(fallbacks.length, 1);
+    assert.equal(fallbacks[0]?.href, "{{inviteUrl}}");
+    assert.match(text, /zkopírujte tento odkaz/);
+    assert.match(text, /nic se\s+nestane/);
   });
 });
