@@ -159,6 +159,31 @@ does not substitute, leaving the raw braces visible to anyone reading the text
 part. `src/verify.ts` fails the build when the text and HTML parts disagree on
 a placeholder's case.
 
+## Directory invite template
+
+`directory-invite` is sent when an admin invites a person who has no account yet from the
+organization's people directory
+(`POST /api/directory/{organizationId}/people/{employmentId}/invite` in flexi-day-be). Redeeming
+it binds the new or existing account to the person's record in the directory.
+
+| Template           | Recipient          | Variables                                                                                                |
+| ------------------ | ------------------ | -------------------------------------------------------------------------------------------------------- |
+| `directory-invite` | the invited person | `organizationName`, `inviterName`, `personName`, `inviteUrl`, `invitedEmail`, `expiresIn`, `expiresInCs` |
+
+- It names the organization and never a group, even when the invite also joins one.
+- `inviteUrl` is the invite link, `{APP_URL}/join/?token=<secret>`, as in `group-invite`. There is
+  no code in this email.
+- `personName` is the name the organization holds for the person.
+- The recipient has no account and so no language setting, so the message carries English and then
+  Czech. `expiresIn` is the English duration (`"14 days"`), `expiresInCs` the Czech one
+  (`"14 dní"`).
+
+Transactional, like `group-invite`: it always sends.
+
+**Rollout order.** The backend sends this template once the `feat/people-directory` branch ships.
+This template must be live in SES (merged and synced to dev and prod) before that release, or the
+send fails and the admin sees `emailDelivered: false`.
+
 ## Subscription grace template
 
 `subscription-grace` is sent by flexi-day-be's Paddle webhook handler when a
