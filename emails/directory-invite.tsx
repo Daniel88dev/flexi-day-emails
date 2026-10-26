@@ -13,7 +13,7 @@ import { buttonSection, divider, heading, link, muted, paragraph } from "../src/
  * organization, never a group, and carries the invite link only.
  *
  * The default props are literal SES/Handlebars placeholders. `render()` must
- * output them untouched — the build asserts this (src/verify.ts).
+ * output them untouched; the build asserts this (src/verify.ts).
  */
 
 /** SES template Subject part (placeholders allowed). */
@@ -41,13 +41,14 @@ export default function DirectoryInvite({
 }: DirectoryInviteProps) {
   return (
     <EmailLayout
-      preview="You have been invited to your organization on flexiday"
+      preview="You have been invited to your organization on flexiday / Pozvánka do vaší organizace ve flexiday"
       footerNote={
         <>
           You received this email because an organization on flexiday keeps a profile with your
           address. If you weren&apos;t expecting it, ignore it: nothing happens until the invite is
           used. / Tento e-mail jste dostali, protože organizace ve flexiday vede profil s vaší
-          adresou. Pokud jste ho nečekali, nevšímejte si ho.
+          adresou. Pokud jste ho nečekali, nevšímejte si ho: dokud pozvánku nikdo nepoužije, nic se
+          nestane.
         </>
       }
     >
@@ -93,6 +94,12 @@ export default function DirectoryInvite({
         </Section>
         <Text style={muted}>
           Pozvánka funguje jednou, jen pro {invitedEmail}, a vyprší za {expiresInCs}.
+        </Text>
+        <Text style={muted}>Pokud tlačítko nefunguje, zkopírujte tento odkaz do prohlížeče:</Text>
+        <Text style={muted}>
+          <Link href={inviteUrl} style={link}>
+            {inviteUrl}
+          </Link>
         </Text>
       </Section>
     </EmailLayout>

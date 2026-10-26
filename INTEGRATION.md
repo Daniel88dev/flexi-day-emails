@@ -180,9 +180,9 @@ it binds the new or existing account to the person's record in the directory.
 
 Transactional, like `group-invite`: it always sends.
 
-**Rollout order.** The backend sends this template once the `feat/people-directory` branch ships.
-This template must be live in SES (merged and synced to dev and prod) before that release, or the
-send fails and the admin sees `emailDelivered: false`.
+**Rollout order.** This template must be live in SES (merged and synced to dev and prod) before the
+backend release that sends it is deployed, or the send fails and the admin sees
+`emailDelivered: false`.
 
 ## Subscription grace template
 
