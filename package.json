@@ -4,13 +4,14 @@
   "private": true,
   "description": "Transactional email templates for flexiday, rendered with react-email and synced to AWS SES",
   "type": "module",
+  "packageManager": "pnpm@12.16.1+sha512.091d1dee7927575661b25dab3c2ae31cafc1c54d6b71ed6a6600cf0c1cb10434a447eae14015f1b23e2e6bedeed79df94a932e2164d2832280dce3fb32f656d1",
   "scripts": {
     "dev": "email dev --dir emails",
     "typecheck": "node node_modules/@typescript/native/bin/tsc --noEmit",
     "build": "tsx src/render.ts && tsx src/verify.ts",
-    "sync": "npm run build && tsx src/sync-templates.ts",
-    "sync:dev": "STAGE=dev npm run sync",
-    "sync:prod": "STAGE=prod npm run sync",
+    "sync": "pnpm run build && tsx src/sync-templates.ts",
+    "sync:dev": "STAGE=dev pnpm run sync",
+    "sync:prod": "STAGE=prod pnpm run sync",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "tsx --test src/*.test.ts"
