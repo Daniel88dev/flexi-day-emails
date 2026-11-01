@@ -140,12 +140,24 @@ resource "aws_iam_role" "forwarder" {
   assume_role_policy = data.aws_iam_policy_document.forwarder_assume.json
 }
 
+# Lambda created this group on its first run; it is imported so Terraform owns
+# its retention and the role no longer needs logs:CreateLogGroup.
+import {
+  to = aws_cloudwatch_log_group.forwarder
+  id = "/aws/lambda/${var.project_name}-ses-forwarder"
+}
+
+resource "aws_cloudwatch_log_group" "forwarder" {
+  name              = "/aws/lambda/${var.project_name}-ses-forwarder"
+  retention_in_days = 14
+}
+
 data "aws_iam_policy_document" "forwarder" {
   statement {
     sid       = "Logs"
     effect    = "Allow"
-    actions   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
-    resources = ["arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${var.project_name}-ses-forwarder:*"]
+    actions   = ["logs:CreateLogStream", "logs:PutLogEvents"]
+    resources = ["${aws_cloudwatch_log_group.forwarder.arn}:*"]
   }
 
   statement {
