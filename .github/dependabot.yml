@@ -1,8 +1,9 @@
 version: 2
 
 updates:
-  # npm. Minor and patch land as one grouped PR per week so routine bumps do not
-  # become a dozen separate reviews; majors stay individual because they need one.
+  # The npm ecosystem also covers pnpm and reads pnpm-lock.yaml. Minor and patch land as one
+  # grouped PR per week so routine bumps do not become a dozen separate reviews; majors stay
+  # individual because they need one.
   - package-ecosystem: npm
     directory: /
     schedule:

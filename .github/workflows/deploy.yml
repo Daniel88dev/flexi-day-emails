@@ -21,15 +21,15 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci
-      - run: npm run format:check
-      - run: npm run typecheck
-      - run: npm test
-      - run: npm run build
+          cache: true
+          require-lockfile: true
+      - run: pnpm run format:check
+      - run: pnpm run typecheck
+      - run: pnpm test
+      - run: pnpm run build
 
   sync-dev:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -40,16 +40,16 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci
+          cache: true
+          require-lockfile: true
       - uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: ${{ vars.AWS_GHA_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
-      - run: npm run sync:dev
+      - run: pnpm run sync:dev
 
   # Prod sync is gated by the "production" GitHub environment — configure a
   # required reviewer on it (Settings → Environments → production) so this
@@ -63,13 +63,13 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
         with:
           node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci
+          cache: true
+          require-lockfile: true
       - uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
           role-to-assume: ${{ vars.AWS_GHA_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
-      - run: npm run sync:prod
+      - run: pnpm run sync:prod

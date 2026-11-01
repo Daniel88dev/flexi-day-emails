@@ -144,7 +144,7 @@ async function main() {
     // only has to redo the rest, and re-doing all of it is harmless anyway.
     console.error(
       `\nfailed after ${String(synced)}/${String(manifest.length)} template(s) — ` +
-        `re-run \`npm run sync:${stage}\` to finish.\n`
+        `re-run \`pnpm run sync:${stage}\` to finish.\n`
     );
     throw err;
   }
