@@ -35,11 +35,14 @@ interface TemplateModule {
 
 const PLACEHOLDER_RE = /\{\{\s*([a-zA-Z0-9_.]+)\s*\}\}/g;
 
+/** `{{#if czech}}` reads the variable `czech`; `{{else}}` reads none. */
+const BLOCK_RE = /\{\{#(?:if|unless)\s+([a-zA-Z0-9_.]+)\s*\}\}/g;
+
 function extractVariables(...parts: string[]): string[] {
   const vars = new Set<string>();
   for (const part of parts) {
-    for (const match of part.matchAll(PLACEHOLDER_RE)) {
-      vars.add(match[1] as string);
+    for (const match of [...part.matchAll(PLACEHOLDER_RE), ...part.matchAll(BLOCK_RE)]) {
+      if (match[1] !== "else") vars.add(match[1] as string);
     }
   }
   return [...vars].sort();
