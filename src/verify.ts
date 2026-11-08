@@ -35,8 +35,10 @@ async function main() {
 
     for (const variable of entry.variables) {
       const token = `{{${variable}}}`;
-      const block = new RegExp(`\\{\\{#(?:if|unless) ${variable.replace(/\./g, "\\.")}\\}\\}`);
-      if (!html.includes(token) && !text.includes(token) && !block.test(html + text)) {
+      const opensBlock = ["if", "unless"].some((helper) =>
+        (html + text).includes(`{{#${helper} ${variable}}}`)
+      );
+      if (!html.includes(token) && !text.includes(token) && !opensBlock) {
         errors.push(`${entry.name}: expected literal ${token} in HTML or text output`);
       }
     }
