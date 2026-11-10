@@ -38,6 +38,11 @@ export const link = {
   wordBreak: "break-all" as const,
 };
 
+/** A link inside running text, where `link`'s word breaking would split its label. */
+export const textLink = {
+  color: colors.primary,
+};
+
 export const divider = {
   borderColor: colors.border,
   margin: "18px 0",

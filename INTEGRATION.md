@@ -202,6 +202,29 @@ plan's limits become read-only (nothing is deleted).
 
 It is billing mail, so it ignores `user_settings.emailNotifications`.
 
+## Sub-processor notice template
+
+`subprocessor-notice` is the 30-day notice our data processing agreement promises before Anthropic
+becomes a sub-processor. flexi-day-be's one-off `subprocessor-notice` command sends it once to the
+owner of every organization, on every plan.
+
+| Template              | Recipient                 | Variables                                        |
+| --------------------- | ------------------------- | ------------------------------------------------ |
+| `subprocessor-notice` | each organization's owner | `czech`, `name`, `organizationName`, `startDate` |
+
+- One template carries both languages. `czech` is a **boolean**, `true` when the owner's language is
+  Czech, and SES picks the subject, body and footer with `{{#if czech}}`. It is the one variable
+  that may be `false`.
+- `startDate` is the day owners may turn on the Assistant, 30 days after the first send, formatted
+  by the backend in the owner's language (`8 December 2026`, `8. prosince 2026`).
+- `name` is the owner's name; only the English greeting uses it.
+- The copy asks owners who object to reply, so the backend sends it with a Reply-To address that
+  reaches a person.
+- The links point at the production legal pages, `/cs/` twins for Czech, `/security/` in English
+  for both.
+
+Account mail about the owner's contract: it ignores `user_settings.emailNotifications`.
+
 ## Implementation instructions
 
 1. Install `@aws-sdk/client-sesv2`.

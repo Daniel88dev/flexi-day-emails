@@ -35,8 +35,28 @@ async function main() {
 
     for (const variable of entry.variables) {
       const token = `{{${variable}}}`;
-      if (!html.includes(token) && !text.includes(token)) {
+      const opensBlock = ["if", "unless"].some((helper) =>
+        (html + text).includes(`{{#${helper} ${variable}}}`)
+      );
+      if (!html.includes(token) && !text.includes(token) && !opensBlock) {
         errors.push(`${entry.name}: expected literal ${token} in HTML or text output`);
+      }
+    }
+
+    // SES drops a message whose template fails to render, so every part closes what it opens.
+    for (const [part, content] of [
+      ["subject", entry.subject],
+      ["HTML", html],
+      ["text", text],
+    ] as const) {
+      for (const helper of ["if", "unless"]) {
+        const opened = content.split(`{{#${helper} `).length - 1;
+        const closed = content.split(`{{/${helper}}}`).length - 1;
+        if (opened !== closed) {
+          errors.push(
+            `${entry.name}: the ${part} opens {{#${helper}}} ${String(opened)} times and closes it ${String(closed)} times`
+          );
+        }
       }
     }
 

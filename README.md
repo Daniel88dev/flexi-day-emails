@@ -33,6 +33,7 @@ terraform/               SES identity + DKIM + config set + GitHub OIDC role
 | `group-invite`               | a group admin invites someone by email                          |
 | `directory-invite`           | an admin invites a person without an account from the directory |
 | `subscription-grace`         | a payment fails or a subscription is cancelled                  |
+| `subprocessor-notice`        | once, to every owner: Anthropic becomes a sub-processor         |
 | `vacation-approval-request`  | an employee submits a request their approver must decide on     |
 | `vacation-approved`          | an approver accepts a request                                   |
 | `vacation-rejected`          | an approver declines a request                                  |
